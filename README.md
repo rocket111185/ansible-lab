@@ -1,5 +1,7 @@
 # Ansible Lab
 
+Виконав студент групи ІП-94 Рекечинський Дмитро
+
 ## Requirements
 
 * Python 3.x
