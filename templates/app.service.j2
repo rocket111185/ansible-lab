@@ -1,15 +1,40 @@
-{#
-TODO: reuse your unit from Lab 1
-TODO: Path to jar should use variables {{ app_dir }}/{{ app_file }}
-TODO: Environment variable for PORT should use value from variable {{ app_port }}
-#}
+##############################
+# Laboratory work 1
+# Group: IP-94
+# Student: Rekechynsky Dmytro
+##############################
+
 [Unit]
-Description=
-Requires=
-After=
+Description=Nyan Cat server
+
+# If the network.target crashes, shutdown the service
+Requires=network.target
+
+# Load this service not simultaneously, but after the service
+After=network.target
+
+# Make 3 restart attempts during 30 seconds, then wait
+StartLimitBurst=3
+StartLimitIntervalSec=30
 
 [Install]
 WantedBy=multi-user.target
 
 [Service]
-ExecStart=
+# This type is used is most of cases, that's why it's called "simple"
+Type=simple
+
+# Restart the service if the process is finished with any status
+Restart=always
+
+# Restart it within specified amount of time
+RestartSec={{app_restart_sec}}
+
+# User who runs the process
+User={{app_user}}
+
+# Environment variables
+Environment=PORT={{app_port}}
+
+# Provide full path to the executative with its parameters
+ExecStart=/usr/bin/java -jar {{app_dir}}/{{app_file}}

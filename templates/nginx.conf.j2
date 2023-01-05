@@ -1,10 +1,4 @@
-{#
-    Not the best way, but we will re-write entire default config :)
-    Setup Nginx to listen on port 80 as a reverse proxy.
-    Proxy pass destination should use {{ app_port }} variable
-    to specify port on localhost where Java app lives
-#}
-user www-data;
+user root;
 worker_processes auto;
 pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
@@ -28,9 +22,11 @@ http {
     gzip on;
 
     server {
-        {#
-            TODO: Nginx server config using proxy_pass and {{ app_port }}
-        #}
-        # TODO: Your code here
+        listen 80;
+        server_name localhost;
+
+        location / {
+            proxy_pass http://{{app_host}}:{{app_port}};
+        }
     }
 }
